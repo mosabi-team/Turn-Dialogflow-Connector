@@ -19,6 +19,10 @@ const listener = app.listen(PORT, function () {
 app.post('/', async (req, resp) => {
     const body = req.body as TurnIncomingPayload;
     
+    if(!!body.statuses){
+      return resp.status(200).send(); //Ignore status updates
+    }
+
     if(!body.contacts || body.contacts.length === 0){
       return resp.status(400).send("No contacts provided");
     }

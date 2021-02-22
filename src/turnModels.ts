@@ -1,5 +1,13 @@
+interface TurnOutboundStatusNotification {
+    id: string;
+    recipient_id: string,
+    status: "sent" | "delivered" | "read" | "failed",
+    timestamp: string
+}
+
 interface TurnIncomingPayload {
     contacts: TurnIncomingMessageContact[],
+    statuses: TurnOutboundStatusNotification[],
     messages: {
         context?: {
             from: string;
