@@ -6,8 +6,8 @@ interface TurnOutboundStatusNotification {
 }
 
 interface TurnIncomingPayload {
-    contacts: TurnIncomingMessageContact[],
-    statuses: TurnOutboundStatusNotification[],
+    contacts: TurnIncomingMessageContact[];
+    statuses: TurnOutboundStatusNotification[];
     messages: {
         context?: {
             from: string;
@@ -144,7 +144,7 @@ interface TurnIncomingPayload {
                 type: string;
             }]
         }[]
-    }[]
+    }[];
 };
 
 interface TurnIncomingMessageContact {
@@ -186,4 +186,4 @@ interface TurnOutgoingMessageResponse {
     }[]
 }
 
-export {TurnIncomingPayload, TurnIncomingMessageContact, TurnOutgoingMessage, TurnOutgoingMessageResponse};
+export {TurnIncomingPayload, TurnIncomingMessageContact, TurnOutgoingMessage, TurnOutgoingMessageResponse, TurnOutboundStatusNotification};

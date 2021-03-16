@@ -2,26 +2,35 @@
   "name": "turn-dialogflow-integration",
   "version": "1.0.0",
   "description": "A server that connects Google's dialogflow to Turn.io",
-  "main": "server.js",
+  "main": "lib/index.js",
   "scripts": {
     "start": "tsc && env-cmd node ./lib/server.js",
-    "tunnel": "ngrok http 8080"
+    "tunnel": "ngrok http 8080",
+    "test": "jest",
+    "gcp-build": "tsc -p .",
+    "gcp-deploy": "gcloud app deploy",
+    "gcp-func-deploy": "gcloud functions deploy TurnConnector --runtime nodejs12 --trigger-http --allow-unauthenticated"
   },
   "dependencies": {
     "@google-cloud/dialogflow": "^3.3.0",
-    "@types/node-fetch": "^2.5.8",
+    "dotenv": "^8.2.0",
     "express": "^4.16.4",
     "ngrok": "^3.4.0",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "uuid": "^8.3.2",
+    "typescript": "^3.9.7"
   },
   "devDependencies": {
+    "@types/jest": "^26.0.20",
+    "@types/node-fetch": "^2.5.8",
+    "@types/uuid": "^8.3.0",
     "@types/express": "^4.17.2",
     "env-cmd": "^10.1.0",
     "ts-jest": "^25.5.1",
-    "typescript": "^3.9.7"
+    "jest": "^26.6.3"
   },
   "engines": {
-    "node": "10.x"
+    "node": "12"
   },
   "repository": {
     "url": "https://github.com/mosabi-team/Turn-Dialogflow-Connector"

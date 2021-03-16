@@ -2,17 +2,21 @@ import * as dialogflow from "@google-cloud/dialogflow";
 import * as credentials_file from './auth/gcloudserviceaccount.json';
 
 //const credentials_file_path = ;
-const sessionClient = new dialogflow.SessionsClient({
+const sessionClient = new dialogflow.v2beta1.SessionsClient({
   credentials: credentials_file
 });
+
+console.log("CREDS FILE: " + credentials_file);
 
 export async function detectIntent(
   projectId: string,
   sessionId: string,
   query: string,
-  contexts: dialogflow.protos.google.cloud.dialogflow.v2.IContext[] | null | undefined,
-  languageCode: string
-): Promise<dialogflow.protos.google.cloud.dialogflow.v2.IDetectIntentResponse> {
+  contexts: dialogflow.protos.google.cloud.dialogflow.v2beta1.IContext[] | null | undefined,
+  languageCode: string,
+  mediaUrl?: string
+): Promise<dialogflow.protos.google.cloud.dialogflow.v2beta1.IDetectIntentResponse> {
+  console.log("PROJECT: " + projectId);
   // The path to identify the agent that owns the created intent.
   const sessionPath = sessionClient.projectAgentSessionPath(
     projectId,
@@ -20,8 +24,15 @@ export async function detectIntent(
   );
 
   // The text query request.
-  const request: dialogflow.protos.google.cloud.dialogflow.v2.IDetectIntentRequest = {
+  const request: dialogflow.protos.google.cloud.dialogflow.v2beta1.IDetectIntentRequest = {
     session: sessionPath,
+    queryParams: {
+      payload: {
+        fields: {
+          mediaUrl: {stringValue: mediaUrl || ""}
+        }
+      }
+    },
     queryInput: {
       text: {
         text: query,
@@ -40,10 +51,10 @@ export async function detectIntent(
   return responses[0];
 }
 
-export async function executeQueries(projectId: string, sessionId: string, queries: string[], languageCode: string): Promise<dialogflow.protos.google.cloud.dialogflow.v2.IDetectIntentResponse[] | undefined> {
+export async function executeQueries(projectId: string, sessionId: string, queries: string[], languageCode: string): Promise<dialogflow.protos.google.cloud.dialogflow.v2beta1.IDetectIntentResponse[] | undefined> {
   // Keeping the context across queries let's us simulate an ongoing conversation with the bot
-  let context: dialogflow.protos.google.cloud.dialogflow.v2.IContext[] | null | undefined;
-  const intentResponses: dialogflow.protos.google.cloud.dialogflow.v2.IDetectIntentResponse[] = [];
+  let context: dialogflow.protos.google.cloud.dialogflow.v2beta1.IContext[] | null | undefined;
+  const intentResponses: dialogflow.protos.google.cloud.dialogflow.v2beta1.IDetectIntentResponse[] = [];
   for (const query of queries) {
     try {
       console.log(`Sending Query: ${query}`);
